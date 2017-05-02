@@ -1,0 +1,24 @@
+tomcat:
+  build: ../netflix-tomcat/
+  container_name: tomcat
+  ports:
+    - "8080:8080"
+  privileged: true
+
+middletier:
+  build: ../netflix-middletier/
+  container_name: middletier
+  hostname: "middletier"
+  links:
+    - tomcat:tomcat
+
+
+
+edge:
+  build: ../netflix-edge/
+  container_name: edge
+  links:
+    - tomcat:tomcat
+    - middletier:middletier
+  ports:
+    - "9090:9090"
